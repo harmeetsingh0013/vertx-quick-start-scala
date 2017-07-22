@@ -10,7 +10,7 @@ class MyFirstVerticle extends ScalaVerticle {
   override def startFuture(): Future[_] = {
     vertx.createHttpServer()
       .requestHandler(r => r.response().end("<h1>Hello from my first Vert.x 3 Application</h1>"))
-      .listenFuture(8080)
+      .listenFuture(config.getInteger("http.port", 8080))
   }
 }
 
