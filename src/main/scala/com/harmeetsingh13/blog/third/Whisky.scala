@@ -2,11 +2,11 @@ package com.harmeetsingh13.blog.third
 
 import java.util.concurrent.atomic.AtomicInteger
 
-case class Whisky (
-  id: Int,
-  name: String,
-  origin: String
-) {
+case class Whisky(
+                   id: Int,
+                   name: String,
+                   origin: String
+                 ) {
   def this(name: String, origin: String) {
     this(Whisky.COUNTER.getAndIncrement(), name, origin)
   }
@@ -25,4 +25,16 @@ object Whisky {
   }
 
   def getWhiskies = data.values.toVector
+  def addWhisky(whisky: Whisky) = {
+    val newWhisky = whisky.copy(id = COUNTER.incrementAndGet())
+    data = data ++: Map(newWhisky.id -> newWhisky)
+  }
+  def remove(id: Int) = {
+    data = data.filterKeys(_ != id)
+  }
+  def findOne(id: Int) = data.get(id)
+  def updateWhisky(id: Int, whisky: Whisky) = {
+    remove(id)
+    data = data ++: Map(id -> whisky.copy(id = id))
+  }
 }
